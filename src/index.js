@@ -8,9 +8,11 @@ import {
 
 import './index.css';
 import App from './App';
+import Header from './Header'
 
 ReactDOM.render(
     <Router>
+        <Header />
         <Switch>
             <Route path="/">
                 <App />
