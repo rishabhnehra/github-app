@@ -7,16 +7,15 @@ import {
 } from 'react-router-dom'
 
 import './index.css';
-import App from './App';
 import Header from './Header'
 import Search from './Search'
+import Profile from './Profile'
 
 ReactDOM.render(
     <Router>
         <Header />
         <Switch>
-            <Route path="/">
-                <Search />
-            </Route>
+            <Route path="/profile/:username" component={Profile}/>
+            <Route path="/" component={Search} />        
         </Switch>
     </Router>, document.getElementById('root'));
