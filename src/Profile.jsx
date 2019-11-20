@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 
 class Profile extends Component {
 
@@ -18,7 +19,7 @@ class Profile extends Component {
             .catch(error => console.log(error)) //TODO Snackbar
     }
 
-    getRepositories = () => {
+    getAllRepositories = () => {
         const { username } = this.props.match.params
         fetch(`https://api.github.com/users/${username}/repos`)
             .then(response => {
@@ -31,11 +32,12 @@ class Profile extends Component {
 
     componentDidMount = () => {
         this.getProfile()
-        this.getRepositories()
+        this.getAllRepositories()
     }
 
     render() {
-        const { user } = this.state
+        const { user, repos } = this.state
+        const { username } = this.props.match.params
         return (
             <div>
                 <h3>{user.name}</h3>
@@ -44,6 +46,11 @@ class Profile extends Component {
                 <p>Followers: {user.followers}</p>
                 <p>Following: {user.following}</p>
                 <p>Public Repos: {user.public_repos}</p>
+                <hr />
+                <h3>Repositories</h3>
+                <ul>
+                    {repos.map(repo => <Link to={`${username}/${repo.name}`}><li>{repo.name}</li></Link>)}
+                </ul>
             </div>
         )
     }
