@@ -14,10 +14,27 @@ code {
 
 .searchitem__container {
   width: 200px;
-  height: 250px;
+  height: 246px;
 }
 
 .searchitem__media {
   width: 200px;
   height: 200px;
+}
+
+.container {
+  margin: auto;
+  max-width: 500px;
+}
+
+.Profile__submitbutton{
+  margin-top: 1rem;
+}
+.SearchItem__container {
+  margin: -3px 1rem;
+}
+
+a{
+  text-decoration: none;
+  color: #000;
 }
