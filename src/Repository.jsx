@@ -3,7 +3,19 @@ import { Link } from 'react-router-dom'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 
-const BarGraph = () => {
+const BarGraph = ({ issues }) => {
+
+    let openIssues = 0
+    let closedIssues = 0
+
+    if (issues !== null) {
+        for (let i of issues)
+            if (i.state === "open")
+                openIssues++
+            else
+                closedIssues++
+    }
+
     const options = {
         chart: {
             type: 'column'
@@ -24,7 +36,7 @@ const BarGraph = () => {
         },
         series: [{
             name: 'Issues',
-            data: [107, 31]
+            data: [openIssues, closedIssues]
         }]
     };
 
@@ -35,7 +47,19 @@ const BarGraph = () => {
     )
 }
 
-const PieChart = () => {
+const PieChart = ({ issues }) => {
+
+    let openIssues = 0
+    let closedIssues = 0
+
+    if (issues !== null) {
+        for (let i of issues)
+            if (i.state === "open")
+                openIssues++
+            else
+                closedIssues++
+    }
+
     const options = {
         chart: {
             type: 'pie'
@@ -58,11 +82,11 @@ const PieChart = () => {
             name: 'Issues',
             data: [{
                 name: "Open",
-                y: 30
+                y: openIssues
             },
             {
                 name: "Closed",
-                y: 5
+                y: closedIssues
             }]
         }]
     };
@@ -133,6 +157,7 @@ class Repository extends Component {
         this.getCommits()
         this.getIssues()
         this.getForks()
+
     }
 
     render() {
@@ -141,8 +166,8 @@ class Repository extends Component {
         return (
             <div>
 
-                {showBar ? <BarGraph /> : <PieChart />}
-                
+                {showBar ? <BarGraph issues={issues} /> : <PieChart issues={issues} />}
+
                 {repository ? (
                     <div>
                         <h2>{repository.name}</h2>
