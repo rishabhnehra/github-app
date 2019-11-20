@@ -43,3 +43,7 @@ a{
   width: 200px;
   height: auto;
 }
+
+span {
+  margin: 0 8px;
+}

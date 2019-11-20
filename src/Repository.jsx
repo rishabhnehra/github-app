@@ -2,6 +2,15 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
+import { Grid, Cell, Row } from '@material/react-layout-grid'
+import List, { ListItemText, ListItem } from '@material/react-list'
+import Switch from '@material/react-switch';
+import {ChipSet, Chip} from '@material/react-chips'
+
+import '@material/react-list/dist/list.css';
+import '@material/react-layout-grid/dist/layout-grid.css';
+import "@material/react-switch/dist/switch.css";
+import "@material/react-chips/dist/chips.css";
 
 const BarGraph = ({ issues }) => {
 
@@ -166,50 +175,83 @@ class Repository extends Component {
         return (
             <div>
 
-                {showBar ? <BarGraph issues={issues} /> : <PieChart issues={issues} />}
+                <Grid>
+                    <Row>
+                        <Cell columns={12}>
+                            {repository ? (
+                                <div>
+                                    <h2>{repository.name}</h2>
+                                    <p>By <Link to={`/profile/${username}`}>{repository.owner.login}</Link></p>
+                                </div>
+                            ) : (<progress></progress>)}
+                        </Cell>
+                    </Row>
 
-                {repository ? (
-                    <div>
-                        <h2>{repository.name}</h2>
-                        <p>By <Link to={`/profile/${username}`}>{repository.owner.login}</Link></p>
-                    </div>
-                ) : (<progress></progress>)}
+                    <Row>
+                        <Cell desktopColumns={3} tabletColumns={2} phoneColumns={4}>
+                            <h3>Commits</h3>
+                            {commits && <p>{commits.length} commits</p>}
+                        </Cell>
 
-                <hr />
+                        <Cell desktopColumns={9} tabletColumns={6} phoneColumns={4}>
+                            <List twoLine>
+                                {commits && commits.map(c => (
+                                    <ListItem>
+                                        <ListItemText primaryText={c.commit.message}
+                                            secondaryText={`Commiter: ${c.commit.committer.name}`} />
+                                    </ListItem>
+                                ))}
+                            </List>
+                        </Cell>
+                    </Row>
 
-                <h3>Commits</h3>
-                {commits ? (
-                    <div>
-                        <p>{commits.length} commits</p>
-                        {commits.map(c => (
-                            <li>{c.commit.message}</li>
-                        ))}
-                    </div>
-                ) : (<progress></progress>)}
+                    <Row>
+                        <Cell desktopColumns={3} tabletColumns={2} phoneColumns={4}>
+                            <h3>Forks</h3>
+                            {forks && <p>{forks.length} forks</p>}
+                        </Cell>
 
-                <hr />
+                        <Cell desktopColumns={9} tabletColumns={6} phoneColumns={4}>
+                            <List>
+                                {forks && forks.map(f => (
+                                    <Link to={`/profile/${f.owner.login}`}>
+                                        <ListItem>
+                                            <ListItemText primaryText={f.owner.login} />
+                                        </ListItem>
+                                    </Link>
+                                ))}
+                            </List>
+                        </Cell>
+                    </Row>
 
-                <h3>Forks</h3>
-                {forks ? (
-                    <div>
-                        <p>{forks.length} forks</p>
-                        {forks.map(f => (
-                            <li>{f.owner.login}</li>
-                        ))}
-                    </div>
-                ) : (<progress></progress>)}
+                    <Row>
+                        <Cell desktopColumns={3} tabletColumns={2} phoneColumns={4}>
+                            <h3>Issues</h3>
+                            <span>Pie</span>
+                            <Switch
+                                checked={showBar}
+                                onChange={(e) => this.setState({showBar: !this.state.showBar})} />
+                                <span>Bar</span>
+                        </Cell>
 
-                <hr />
+                        <Cell desktopColumns={9} tabletColumns={6} phoneColumns={4}>
+                            {showBar ? <BarGraph issues={issues} /> : <PieChart issues={issues}/>}
+                        </Cell>
 
-                <h3>Issues</h3>
-                {issues ? (
-                    <div>
-                        <p>{issues.length} Issues</p>
-                        {issues.map(i => (
-                            <li>{i.title} {i.state}</li>
-                        ))}
-                    </div>
-                ) : (<progress></progress>)}
+                        <Cell desktopColumns={12} tabletColumns={6} phoneColumns={4}>
+                            <List twoLine>
+                                {issues && issues.map(i => (
+                                    <ListItem>
+                                        <ListItemText 
+                                            primaryText={i.title}
+                                            secondaryText={i.state}
+                                        />
+                                    </ListItem>
+                                ))}
+                            </List>
+                        </Cell>
+                    </Row>
+                </Grid>
             </div>
         )
     }
