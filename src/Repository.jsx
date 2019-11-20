@@ -1,5 +1,78 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
+import Highcharts from 'highcharts'
+import HighchartsReact from 'highcharts-react-official'
+
+const BarGraph = () => {
+    const options = {
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Issues'
+        },
+        xAxis: {
+            categories: ['Open', 'Closed'],
+            title: {
+                text: null
+            }
+        },
+        yAxis: {
+            title: {
+                text: '# of issues',
+            },
+        },
+        series: [{
+            name: 'Issues',
+            data: [107, 31]
+        }]
+    };
+
+    return (
+        <div>
+            <HighchartsReact highcharts={Highcharts} options={options} />
+        </div>
+    )
+}
+
+const PieChart = () => {
+    const options = {
+        chart: {
+            type: 'pie'
+        },
+        title: {
+            text: 'Issues'
+        },
+        xAxis: {
+            categories: ['Open', 'Closed'],
+            title: {
+                text: null
+            }
+        },
+        yAxis: {
+            title: {
+                text: '# of issues',
+            },
+        },
+        series: [{
+            name: 'Issues',
+            data: [{
+                name: "Open",
+                y: 30
+            },
+            {
+                name: "Closed",
+                y: 5
+            }]
+        }]
+    };
+
+    return (
+        <div>
+            <HighchartsReact highcharts={Highcharts} options={options} />
+        </div>
+    )
+}
 
 class Repository extends Component {
 
@@ -7,7 +80,8 @@ class Repository extends Component {
         repository: null,
         commits: null,
         forks: null,
-        issues: null
+        issues: null,
+        showBar: true
     }
 
     getRespository = () => {
@@ -62,10 +136,13 @@ class Repository extends Component {
     }
 
     render() {
-        const { repository, issues, forks, commits } = this.state
+        const { repository, issues, forks, commits, showBar } = this.state
         const { username } = this.props.match.params
         return (
             <div>
+
+                {showBar ? <BarGraph /> : <PieChart />}
+                
                 {repository ? (
                     <div>
                         <h2>{repository.name}</h2>
